@@ -1,108 +1,310 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tienda de Neumática - Presentación</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
   <style>
+    :root {
+      --primary: #0f3460;
+      --secondary: #1a5fb4;
+      --accent: #e94560;
+      --light: #f4f6f9;
+      --dark: #16213e;
+      --text: #333;
+      --shadow: 0 4px 6px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f4f6f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light); color: var(--text); line-height: 1.6;
     }
+
     header {
-      background: #0f3460;
-      color: white;
-      padding: 20px;
-      text-align: center;
+      background: var(--primary); color: white;
+      padding: 1.5rem; text-align: center; display: none;
+      box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100;
     }
-    header h1 { margin: 0; }
+
+    header h1 { font-size: 2.2rem; }
+    header p { opacity: 0.9; }
+
     .diagramas {
-      display: grid;
+      display: none;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      padding: 20px;
+      gap: 25px; padding: 2rem;
+      max-width: 1200px; margin: 0 auto;
     }
+
     .card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-      padding: 15px;
-      transition: 0.3s;
+      background: white; border-radius: 12px;
+      box-shadow: var(--shadow); text-align: center;
+      padding: 1.5rem; transition: var(--transition);
+      display: flex; flex-direction: column; height: 100%;
     }
-    .card:hover {
-      transform: scale(1.03);
+
+    .card-img-container {
+      height: 300px; display: flex;
+      align-items: center; justify-content: center;
+      margin-bottom: 1rem; overflow: hidden;
+      border-radius: 8px; background: #f8f9fa;
     }
+
     .card img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: contain;
-      border-radius: 10px;
+      width: 100%; height: 100%; object-fit: contain;
     }
-    .card h2 { color: #0f3460; }
+
+    .card h2 { color: var(--primary); margin-bottom: 0.8rem; }
+    .card p { flex-grow: 1; color: #555; margin-bottom: 1.5rem; }
+
     button {
-      margin-top: 10px;
-      background: #0f3460;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
+      margin-top: auto;
+      background: var(--primary); color: white;
+      border: none; padding: 12px 24px;
+      border-radius: 8px; cursor: pointer;
+      font-weight: 600; transition: var(--transition);
+      display: inline-flex; align-items: center; gap: 8px;
     }
-    button:hover {
-      background: #1a5fb4;
-    }
+
+    button:hover { background: var(--secondary); }
+
     footer {
-      text-align: center;
-      padding: 15px;
-      background: #0f3460;
-      color: white;
-      margin-top: 20px;
+      text-align: center; padding: 1.5rem;
+      background: var(--primary); color: white; display: none;
+    }
+
+    /* Modal */
+    #modal {
+      display: none;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center; align-items: center;
+      z-index: 1000; backdrop-filter: blur(5px);
+    }
+
+    #modal-content {
+      background: white;
+      padding: 2rem; border-radius: 12px;
+      max-width: 700px; width: 90%;
+      max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    #modal-video {
+      width: 100%; max-height: 500px;
+      border-radius: 8px; margin: 1rem 0;
+    }
+
+    #modal-content h2 {
+      color: var(--primary); font-size: 1.8rem; margin-bottom: 1rem;
+    }
+
+    #modal-content p { margin-bottom: 1.5rem; }
+
+    #inicio {
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      height: 100vh; text-align: center; padding: 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--dark));
+      background-image: 
+        linear-gradient(135deg, rgba(164, 184, 207, 0.9), rgba(115, 184, 216, 0.9)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%231a5fb4" width="50" height="50"/><rect fill="%231a5fb4" x="50" y="50" width="50" height="50"/></svg>');
+      background-size: cover, 100px;
+    }
+
+    #inicio h1 {
+      font-size: 2.8rem; margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    #inicio p {
+      font-size: 1.3rem; margin-bottom: 2.5rem;
+      max-width: 600px; opacity: 0.9;
+    }
+
+    .float-img {
+      width: 200px;
+      animation: float 3s ease-in-out infinite;
+      margin: 2rem 0;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+
+    #inicio button {
+      font-size: 1.2rem; padding: 15px 35px;
+      background: var(--accent); border: none;
+      border-radius: 50px; color: white;
+      cursor: pointer; transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+    }
+
+    #inicio button:hover {
+      background: #ff6b81; transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(233, 69, 96, 0.5);
+    }
+
+    #volver {
+      margin: 2rem auto;
+      background: var(--accent);
+      max-width: 200px;
+      grid-column: 1 / -1;
+    }
+
+    #volver:hover { background: #ff6b81; }
+
+    @media (max-width: 768px) {
+      .diagramas { grid-template-columns: 1fr; }
+      #inicio h1 { font-size: 2.2rem; }
+      #inicio p { font-size: 1.1rem; }
+    }
+
+    @media (max-width: 480px) {
+      #inicio h1 { font-size: 1.8rem; }
+      #inicio p { font-size: 1rem; }
+      .float-img { width: 150px; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🛠️ Tienda de Neumática</h1>
-    <p>Presentación de diagramas de fluidos y su funcionamiento</p>
-  </header>
 
-  <section class="diagramas">
-    <div class="card">
-      <img src="https://via.placeholder.com/300x200" alt="Diagrama 1">
-      <h2>Control de Cilindro Doble</h2>
-      <p>Diagrama básico de control de un actuador neumático.</p>
-      <button onclick="explicar('Control de Cilindro Doble')">Ver funcionamiento</button>
+<!-- Pantalla de inicio -->
+<section id="inicio">
+  <h1>Bienvenido</h1>
+  <p>Explora los diagramas y aprende sobre el funcionamiento de sistemas neumáticos</p>
+  <img src="img/robot.webp" alt="Imagen neumática" class="float-img" />
+  <button onclick="empezar()"><i class="fas fa-play-circle"></i> Empezar</button>
+</section>
+
+<!-- Encabezado y diagramas -->
+<header id="header">
+  <h1><i class="fas fa-tools"></i> Platina Neumática</h1>
+  <p>Presentación de diagramas de fluidos y su funcionamiento</p>
+</header>
+
+<section class="diagramas" id="diagramas">
+  <div class="card">
+    <div class="card-img-container">
+      <img src="img/1.png" alt="Control de Cilindro Doble" />
     </div>
+    <h2>Diagrama 1 (Simple)</h2>
+    <p>Control básico de un cilindro neumático de doble efecto con válvulas direccionales.</p>
+    <button onclick="explicar('Control de Cilindro Doble')">
+      <i class="fas fa-info-circle"></i> Ver funcionamiento
+    </button>
+  </div>
 
-    <div class="card">
-      <img src="https://via.placeholder.com/300x200" alt="Diagrama 2">
-      <h2>Válvula 5/2</h2>
-      <p>Ejemplo de válvula distribuidora con dos posiciones y cinco vías.</p>
-      <button onclick="explicar('Válvula 5/2')">Ver funcionamiento</button>
+  <div class="card">
+    <div class="card-img-container">
+      <img src="imagenes/valvula-mini.png" alt="Válvula 5/2" />
     </div>
+    <h2>Diagrama 2 (Intermedio)</h2>
+    <p>Uso de válvula 5/2 para el control direccional de aire en actuadores neumáticos.</p>
+    <button onclick="explicar('Válvula 5/2')">
+      <i class="fas fa-info-circle"></i> Ver funcionamiento
+    </button>
+  </div>
 
-    <div class="card">
-      <img src="https://via.placeholder.com/300x200" alt="Diagrama 3">
-      <h2>Circuito con Temporizador</h2>
-      <p>Aplicación de control de retardo en un sistema neumático.</p>
-      <button onclick="explicar('Circuito con Temporizador')">Ver funcionamiento</button>
+  <div class="card">
+    <div class="card-img-container">
+      <img src="imagenes/temporizador-mini.png" alt="Circuito con Temporizador" />
     </div>
-  </section>
+    <h2>Diagrama 3 (Difícil)</h2>
+    <p>Control temporizado del avance de un cilindro con válvula de retardo neumático.</p>
+    <button onclick="explicar('Circuito con Temporizador')">
+      <i class="fas fa-info-circle"></i> Ver funcionamiento
+    </button>
+  </div>
 
-  <footer>
-    <p>© 2025 Tienda de Neumática - Presentación técnica</p>
-  </footer>
+  <button id="volver" onclick="volverInicio()">
+    <i class="fas fa-arrow-left"></i> Volver a Inicio
+  </button>
+</section>
 
-  <script>
-    function explicar(diagrama) {
-      let mensajes = {
-        "Control de Cilindro Doble": "Este circuito permite extender y retraer un cilindro neumático de doble efecto usando una válvula 4/2.",
-        "Válvula 5/2": "La válvula 5/2 dirige el flujo de aire comprimido a un actuador dependiendo de la posición del carrete.",
-        "Circuito con Temporizador": "Este sistema retarda la activación del cilindro mediante una válvula temporizadora."
-      };
-      alert("Funcionamiento de " + diagrama + ": \n\n" + mensajes[diagrama]);
-    }
-  </script>
+<footer id="footer">
+  <p>© 2025 Tienda de Neumática - Presentación técnica</p>
+</footer>
+
+<!-- Modal con video -->
+<div id="modal">
+  <div id="modal-content">
+    <h2 id="modal-title"></h2>
+    <video id="modal-video" controls playsinline muted>
+      <source id="modal-video-source" src="" type="video/mp4">
+      Tu navegador no soporta la reproducción de video.
+    </video>
+    <p id="modal-text"></p>
+    <button onclick="cerrarModal()"><i class="fas fa-times"></i> Cerrar</button>
+  </div>
+</div>
+
+<script>
+  function empezar() {
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("header").style.display = "block";
+    document.getElementById("diagramas").style.display = "grid";
+    document.getElementById("footer").style.display = "block";
+  }
+
+  function volverInicio() {
+    document.getElementById("inicio").style.display = "flex";
+    document.getElementById("header").style.display = "none";
+    document.getElementById("diagramas").style.display = "none";
+    document.getElementById("footer").style.display = "none";
+  }
+
+  function explicar(diagrama) {
+    const datos = {
+      "Control de Cilindro Doble": {
+        mensaje: "Este circuito permite extender y retraer un cilindro neumático de doble efecto usando una válvula 5/2...",
+        video: "Videos/1.1.mp4"
+      },
+      "Válvula 5/2": {
+        mensaje: "La válvula 5/2 dirige el flujo de aire comprimido a un actuador dependiendo de la posición del carrete...",
+        video: "videos/valvula5_2.mp4"
+      },
+      "Circuito con Temporizador": {
+        mensaje: "Este sistema retarda la activación del cilindro mediante una válvula temporizadora...",
+        video: "videos/temporizador.mp4"
+      }
+    };
+
+    const info = datos[diagrama];
+    document.getElementById("modal-title").innerText = diagrama;
+    document.getElementById("modal-text").innerText = info.mensaje;
+    
+    const video = document.getElementById("modal-video");
+    const source = document.getElementById("modal-video-source");
+    source.src = info.video;
+    video.load();
+
+    document.getElementById("modal").style.display = "flex";
+  }
+
+  function cerrarModal() {
+    document.getElementById("modal").style.display = "none";
+    document.getElementById("modal-video").pause();
+  }
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") cerrarModal();
+  });
+
+  document.getElementById('modal').addEventListener('click', function(event) {
+    if (event.target === this) cerrarModal();
+  });
+</script>
+
 </body>
 </html>
