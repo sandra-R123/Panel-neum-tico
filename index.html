@@ -211,7 +211,7 @@
     </div>
     <h2>Diagrama 2 (Intermedio)</h2>
     <p>Uso de válvula 5/2 para el control direccional de aire en actuadores neumáticos.</p>
-    <button onclick="explicar('Válvula 5/2')">
+    <button onclick="explicar('Control de cilindro de doble efecto con válvula 5/2 y retorno automático por resorte')">
       <i class="fas fa-info-circle"></i> Ver funcionamiento
     </button>
   </div>
@@ -222,7 +222,7 @@
     </div>
     <h2>Diagrama 3 (Difícil)</h2>
     <p>Control temporizado del avance de un cilindro con válvula de retardo neumático.</p>
-    <button onclick="explicar('Circuito con Temporizador')">
+    <button onclick="explicar('Circuito neumático secuencial A+ B+ A- B- con control por finales de carrera')">
       <i class="fas fa-info-circle"></i> Ver funcionamiento
     </button>
   </div>
@@ -241,69 +241,84 @@
   <div id="modal-content">
     <h2 id="modal-title"></h2>
     <video id="modal-video" controls playsinline muted>
-      <source id="modal-video-source" src="" type="video/mp4">
-      Tu navegador no soporta la reproducción de video.
+      <source id="modal-video-source" src="" type="video/mp4" />
+      Tu navegador no soporta video HTML5.
     </video>
-    <p id="modal-text"></p>
-    <button onclick="cerrarModal()"><i class="fas fa-times"></i> Cerrar</button>
+    <p id="modal-description"></p>
   </div>
 </div>
 
 <script>
+  // Datos de videos y textos
+  const datos = {
+    'Control de Cilindro Doble': {
+      video: 'Videos/1.1.mp4',
+      texto: `Este sistema controla un cilindro neumático de doble efecto mediante una válvula direccional 5/2 con posición central cerrada. La válvula controla el avance y retroceso del pistón enviando aire a cada cámara del cilindro.`
+    },
+    'Control de cilindro de doble efecto con válvula 5/2 y retorno automático por resorte': {
+      video: 'Videos/1.3.mp4',
+      texto: `En este circuito, la válvula 5/2 es accionada manualmente para controlar el cilindro. El retorno es automático mediante el resorte interno de la válvula, que regresa la posición inicial cuando se suelta el actuador.`
+    },
+    'Circuito neumático secuencial A+ B+ A- B- con control por finales de carrera': {
+      video: 'Videos/1.2.mp4',
+      texto: `Este circuito muestra un control secuencial mediante finales de carrera que activan y desactivan válvulas para controlar un cilindro en distintas etapas: avance A+, avance B+, retroceso A-, y retroceso B-.`
+    }
+  };
+
+  // Elementos DOM
+  const inicio = document.getElementById('inicio');
+  const diagramas = document.getElementById('diagramas');
+  const header = document.getElementById('header');
+  const footer = document.getElementById('footer');
+  const modal = document.getElementById('modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalVideo = document.getElementById('modal-video');
+  const modalVideoSource = document.getElementById('modal-video-source');
+  const modalDescription = document.getElementById('modal-description');
+
+  // Mostrar la sección de diagramas y ocultar inicio
   function empezar() {
-    document.getElementById("inicio").style.display = "none";
-    document.getElementById("header").style.display = "block";
-    document.getElementById("diagramas").style.display = "grid";
-    document.getElementById("footer").style.display = "block";
+    inicio.style.display = 'none';
+    header.style.display = 'block';
+    diagramas.style.display = 'grid';
+    footer.style.display = 'block';
   }
 
+  // Mostrar modal con video y texto según clave
+  function explicar(clave) {
+    if (datos[clave]) {
+      modalTitle.textContent = clave;
+      modalVideoSource.src = datos[clave].video;
+      modalDescription.textContent = datos[clave].texto;
+      modalVideo.load();
+      modal.style.display = 'flex';
+      modalVideo.play();
+    } else {
+      alert('Video o descripción no encontrado para: ' + clave);
+    }
+  }
+
+  // Cerrar modal al hacer click fuera del contenido
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      modalVideo.pause();
+      modalVideo.currentTime = 0;
+    }
+  });
+
+  // Función para volver a la pantalla de inicio
   function volverInicio() {
-    document.getElementById("inicio").style.display = "flex";
-    document.getElementById("header").style.display = "none";
-    document.getElementById("diagramas").style.display = "none";
-    document.getElementById("footer").style.display = "none";
+    modal.style.display = 'none';
+    modalVideo.pause();
+    modalVideo.currentTime = 0;
+
+    diagramas.style.display = 'none';
+    header.style.display = 'none';
+    footer.style.display = 'none';
+
+    inicio.style.display = 'flex';
   }
-
-  function explicar(diagrama) {
-    const datos = {
-      "Control de Cilindro Doble": {
-        mensaje: "Este circuito permite extender y retraer un cilindro neumático de doble efecto usando una válvula 5/2...",
-        video: "Videos/1.1.mp4"
-      },
-      "Control de cilindro de doble efecto con válvula 5/2 y retorno automático por resorte": {
-        mensaje: "El circuito controla un cilindro de doble efecto mediante una válvula 5/2 con pulsador y retorno por resorte. En reposo, el cilindro está extendido. Al presionar el pulsador, el cilindro se retrae; al soltarlo, se extiende nuevamente. Dos reguladores de caudal permiten ajustar la velocidad en ambos sentidos del movimiento.",
-        video: "Videos/1.3.mp4"
-      },
-      "Circuito neumático secuencial A+ B+ A- B- con control por finales de carrera": {
-        mensaje: "Este circuito ejecuta una secuencia automática de dos cilindros: primero se extiende el cilindro A, luego el cilindro B. Al completarse ambos movimientos, el cilindro A se retrae, seguido del cilindro B. Toda la secuencia es activada por un solo pulsador y controlada mediante finales de carrera neumáticos que detectan la posición de cada cilindro.",
-        video: "Videos/1.2.mp4"
-      }
-    };
-
-    const info = datos[diagrama];
-    document.getElementById("modal-title").innerText = diagrama;
-    document.getElementById("modal-text").innerText = info.mensaje;
-    
-    const video = document.getElementById("modal-video");
-    const source = document.getElementById("modal-video-source");
-    source.src = info.video;
-    video.load();
-
-    document.getElementById("modal").style.display = "flex";
-  }
-
-  function cerrarModal() {
-    document.getElementById("modal").style.display = "none";
-    document.getElementById("modal-video").pause();
-  }
-
-  document.addEventListener('keydown', function(event) {
-    if (event.key === "Escape") cerrarModal();
-  });
-
-  document.getElementById('modal').addEventListener('click', function(event) {
-    if (event.target === this) cerrarModal();
-  });
 </script>
 
 </body>
